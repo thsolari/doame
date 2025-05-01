@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const RegisterUserForm = () => {
 
@@ -9,6 +10,8 @@ const RegisterUserForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -19,19 +22,38 @@ const RegisterUserForm = () => {
       }
       
       try {
-        const res = await fetch('api/register', {
+        const resUserExists = await fetch("api/userExists", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const { user } = await resUserExists.json();
+
+        if (user) {
+          setError("Usuário já existe.");
+          return;
+        }
+
+        const res = await fetch("api/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            name, email, password
+            name,
+            email,
+            password,
           }),
         });
 
         if (res.ok) {
           const form = e.target;
           form.reset();
+          setError("");
+          router.push("/");
         } else {
           console.log("Falha no registro do usuário.");
         }
@@ -42,8 +64,8 @@ const RegisterUserForm = () => {
     
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-red-500">
+    <div className="bg-gray-50 bg-blend-soft-light grid place-items-center h-screen">
+      <div className="bg-white shadow-lg p-5 rounded-lg border-t-4 border-red-500">
         <h1 className="text-xl font-bold my-4">Cadastre-se como doador!</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
