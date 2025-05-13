@@ -30,7 +30,7 @@ Também incluiremos um botão de Login, sob a tag _button_.
 Enquanto isso todo o conteúdo estético está contido nas instâncias de _classname_ de cada elemento.
 
 ## Passo 3: Página de coleta de dados para registro de um novo usuário
-Neste passo começamos criando numa pasta 'register' um arquivo page.jsx, que receberá um componente assim como o desenvolvido no passo anterior na pasta 'components', porém com o nome de 'RegisterForm.jsx'.
+Neste passo começamos criando numa pasta 'register' um arquivo page.jsx, que receberá um componente assim como o desenvolvido no passo anterior na pasta 'components', porém com o nome de 'RegisterUserForm.jsx'.
 
 O código deste novo componente será extremamente similar ao de login, porém com um novo campo a serem preenchidos, o de nome completo do usuário.
 
@@ -41,7 +41,7 @@ Para conectar essas páginas, basta incluirmos o elemento _Link_, que deve ser i
 A fim de fazer o setup da autenticação, instalaremos três pacotes através do terminal com o comando `npm i next-auth mongoose bcryptjs`.
 
 ## Passo 6: Lógica da coleta dos dados inseridos
-No arquivo 'RegisterForm', na função 'RegisterForm' adicionamos o "estado" dos dados com _useState_, que torna o nosso código encapsulado e mais seguro. 
+No arquivo 'RegisterUserForm', na função 'RegisterUserForm' adicionamos o "estado" dos dados com _useState_, que torna o nosso código encapsulado e mais seguro. 
 
 Seguinte, aplicamos a lógica de _onChange_, que retorna nosso input à medida que o usuário preenche os dados, e o aplica à cada uma das variáveis correspondentes.
 
@@ -84,10 +84,12 @@ Primeiro, para o funcionamento do nosso site, e o sucesso do método de autentic
 
 Com isso, implementaremos um código muito similar ao encontrado em 'RegisterForm' no nosso arquivo 'LoginForm', recebendo os dados inseridos pelo usuário.
 
-Para completar o código teremos uma nova pasta em 'api' chamada 'auth', onde outra pasta nomeada '[...nextauth]' guardará nosso código de autenticação propriamente dito, sendo num novo arquivo 'route.js'. Nele, 
+Para completar o código teremos uma nova pasta em 'api' chamada 'auth', onde outra pasta nomeada '[...nextauth]' guardará nosso código de autenticação propriamente dito, sendo num novo arquivo 'route.js'. Nele, teremos uma lógica bem simples, de retorno de credenciais, comparação de dados com `bcrypt.compare`, e abaixo especificaremos nossa função como 'handler', e este 'handler' declararemos como POST, que será utilizado no método de coleta de dados tanto em 'LoginForm', quanto em 'RegisterUserForm', assim como o tipo de dados "credentials".
 
+## Passo 14: Autorização de um usuário existente
+Neste momento implementaremos a autorização de login de um usuário, e para isso completaremos o arquivo 'route.js' em 'auth'. Tudo isso será encontrado na função `authorize(credentials)`, na checagem de dados com `await User.findOne({ email )}`, e na comparação da senha inserida com `await bcrypt.compare(password, user.password)`
 
+## Passo 15: Retorno dos dados ao usuário
+Finalmente, para que o usuário saiba que seus dados estão sendo processados corretamente, iremos desenvolver uma lógica de retorno dos dados inseridos ao concluir o login.
 
-
-
-
+Para isso, primeiramente criaremos uma pasta em 'app' chamada 'dashboard', que só receberá os dados de um também novo arquivo 'UserInfo' em 'components'. E, de maneira simples, implementamos uma tag _span_ que receberá os dados do usuário em `{session?.user?.name}` e `{session?.user?.email}`, com, por fim, um botão de 'logout'.
