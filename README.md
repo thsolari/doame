@@ -77,10 +77,14 @@ Para este passo, em uma nova pasta dentro de 'api' chamada 'userExists', criarem
 
 Agora, com o método `User.findOne({email}).select("_id")`, buscamos na database o 'id' do email inserido, e se ele já existe.
 
+Para completar a lógica, no nosso arquivo 'RegisterForm', coletamremos os dados com `fetch("api/register"` com cada parte do objeto sendo requerido, e ainda com uma nova função 'resUserExists' aguarda se o código retornará um email, e, se sim, impedirá o registro de um novo usuário.
 
+## Passo 13: Autenticação com NextAuth
+Primeiro, para o funcionamento do nosso site, e o sucesso do método de autenticação, começaremos criando um arquivo nomeado 'Providers.js', que certificará de termos uma sessão no nosso site, ou seja, um estado em que temos nossos dados inseridos ativos em nosso site; e com o código de 'AuthProvider' envolveremos nossa página 'layout.js'.
 
+Com isso, implementaremos um código muito similar ao encontrado em 'RegisterForm' no nosso arquivo 'LoginForm', recebendo os dados inseridos pelo usuário.
 
-
+Para completar o código teremos uma nova pasta em 'api' chamada 'auth', onde outra pasta nomeada '[...nextauth]' guardará nosso código de autenticação propriamente dito, sendo num novo arquivo 'route.js'. Nele, 
 
 
 
